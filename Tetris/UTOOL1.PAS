@@ -1,0 +1,124 @@
+unit uTool1;
+
+interface
+
+uses
+  IniFiles, SysUtils;
+
+const
+  ERR_SectionNotFound  = 'Section not found';
+
+type
+  TAccess = set of  (acRead, acWrite, acDefault);
+
+type
+  TProb = class
+  private
+    FIniFile     :TIniFile;
+    FFileName    :String;
+    FSection     :String;
+    FReadCount,
+    FWriteCount  :Integer;
+  public
+    constructor Create(FileName: String); overload;
+    constructor Create(FileName, Section: String); overload;
+    property ReadCount :Integer read FReadCount write FReadCount;
+    property WriteCount:Integer read FWriteCount write FWriteCount;
+    procedure ProbRW(Rq: Boolean; Section, Key :String; var Value :Boolean; Default :Boolean); overload;
+    procedure ProbRW(Rq: Boolean; Section, Key :String; var Value :Integer; Default :Integer); overload;
+    procedure ProbRW(Rq: Boolean; Section, Key :String; var Value :String; Default :String); overload;
+    procedure ProbRndRW(Rq: TAccess; var Value :Boolean; Default :Boolean=False); overload;
+    procedure ProbRndRW(Rq: TAccess; var Value :Integer; Default :Integer=0); overload;
+    procedure ProbRndRW(Rq: TAccess; var Value :String; Default :String=''); overload;
+  end;
+
+implementation
+
+constructor TProb.Create(FileName: String);
+begin
+  FFileName := FileName;
+  FIniFile  := TIniFile.Create(FileName);
+end;
+
+constructor TProb.Create(FileName, Section: String);
+begin
+  FFileName := FileName;
+  FSection  := Section;
+  FIniFile  := TIniFile.Create(FileName);
+end;
+
+
+procedure TProb.ProbRW(Rq: Boolean; Section, Key :String; var Value :Boolean; Default :Boolean);
+begin
+  if Rq then
+    FIniFile.WriteBool(Section ,Key, Value)
+  else
+    Value := FIniFile.ReadBool(Section, Key, Default);
+end;
+
+procedure TProb.ProbRW(Rq: Boolean; Section, Key :String; var Value :Integer; Default :Integer);
+begin
+  if Rq then
+    FIniFile.WriteInteger(Section ,Key, Value)
+  else
+    Value := FIniFile.ReadInteger(Section, Key, Default);
+end;
+
+procedure TProb.ProbRW(Rq: Boolean; Section, Key :String; var Value :String; Default :String);
+begin
+  if Rq then
+    FIniFile.WriteString(Section ,Key, Value)
+  else
+    Value := FIniFile.ReadString(Section, Key, Default);
+end;
+
+procedure TProb.ProbRndRW(Rq: TAccess; var Value :Boolean; Default :Boolean=False);
+begin
+  assert(FSection<>'', ERR_SectionNotFound);
+
+  if Rq=[acDefault] then begin
+    Value := Default;
+    inc(FReadCount);
+  end else if Rq=[acWrite] then begin
+    FIniFile.WriteBool(FSection, format('%.3d', [FWriteCount]), Value);
+    inc(FWriteCount);
+  end else begin
+    Value := FIniFile.ReadBool(FSection, format('%.3d', [FReadCount]), Default);
+    inc(FReadCount);
+  end;
+end;
+
+procedure TProb.ProbRndRW(Rq: TAccess; var Value :Integer; Default :Integer=0);
+begin
+  assert(FSection<>'', ERR_SectionNotFound);
+
+  if Rq=[acDefault] then begin
+    Value := Default;
+    inc(FReadCount);
+  end else if Rq=[acWrite] then begin
+    FIniFile.WriteInteger(FSection, format('%.3d', [FWriteCount]), Value);
+    inc(FWriteCount);
+  end else begin
+    Value := FIniFile.ReadInteger(FSection, format('%.3d', [FReadCount]), Default);
+    inc(FReadCount);
+  end;
+end;
+
+
+procedure TProb.ProbRndRW(Rq: TAccess; var Value :String; Default :String='');
+begin
+  assert(FSection<>'', ERR_SectionNotFound);
+
+  if Rq=[acDefault] then begin
+    Value := Default;
+    inc(FReadCount);
+  end else if Rq=[acWrite] then begin
+    FIniFile.WriteString(FSection, format('%.3d', [FWriteCount]), Value);
+    inc(FWriteCount);
+  end else begin
+    Value := FIniFile.ReadString(FSection, format('%.3d', [FReadCount]), Default);
+    inc(FReadCount);
+  end;
+end;
+
+end.

@@ -1,0 +1,239 @@
+unit uGlobal;
+
+interface
+
+uses uTool1, Windows, QForms, SysUtils;
+
+const
+      Base = 0;
+  T = Base + 1;//mavi
+  J = Base + 2;//yesil
+  L = Base + 3;//portakal
+  S = Base + 4;//mor
+  Z = Base + 5;//cam göb
+  I = Base + 6;//altin
+  O = Base + 7;//kirmizi
+
+type
+  TTaslar = record
+    SonrakiYon,
+    Sol,
+    Ust,
+    Yuk,
+    Boy  : Integer;
+    TasA : array[1..4] of array[1..4] of byte;
+  end;
+
+const
+  Taslar:array[0..19] of TTaslar =
+ (
+  (SonrakiYon:0;
+   Sol:0;Ust:0;    // [0]
+   Yuk:0;Boy:0;    // Bos Tas
+   TasA:((0, 0, 0, 0),
+         (0, 0, 0, 0),
+         (0, 0, 0, 0),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:2;
+   Sol:1;Ust:1;    // [1]
+   Yuk:2;Boy:3;    // T.I
+   TasA:((0, T, 0, 0),
+         (T, T, T, 0),
+         (0, 0, 0, 0),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:3;
+   Sol:2;Ust:1;    // 2
+   Yuk:1;Boy:3;    // T.II
+   TasA:((0, T, 0, 0),
+         (0, T, T, 0),
+         (0, T, 0, 0),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:4;
+   Sol:1;Ust:2;    // 3
+   Yuk:3;Boy:3;    // T.III
+   TasA:((0, 0, 0, 0),
+         (T, T, T, 0),
+         (0, T, 0, 0),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:1;
+   Sol:1;Ust:1;    // 4
+   Yuk:3;Boy:2;    // T.IV
+   TasA:((0, T, 0, 0),
+         (T, T, 0, 0),
+         (0, T, 0, 0),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:6;
+   Sol:1;Ust:1;    // 5
+   Yuk:2;Boy:3;    // J.I
+   TasA:((J, 0, 0, 0),
+         (J, J, J, 0),
+         (0, 0, 0, 0),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:7;
+   Sol:1;Ust:1;    // 6
+   Yuk:3;Boy:2;    // J.II
+   TasA:((J, J, 0, 0),
+         (J, 0, 0, 0),
+         (J, 0, 0, 0),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:8;
+   Sol:1;Ust:1;    // 7
+   Yuk:2;Boy:3;    // J.III
+   TasA:((J, J, J, 0),
+         (0, 0, J, 0),
+         (0, 0, 0, 0),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:5;
+   Sol:1;Ust:1;    // 8
+   Yuk:3;Boy:2;    // J.IV
+   TasA:((0, J, 0, 0),
+         (0, J, 0, 0),
+         (J, J, 0, 0),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:10;
+   Sol:1;Ust:1;    // 9
+   Yuk:2;Boy:3;    // L.I
+   TasA:((L, L, L, 0),
+         (L, 0, 0, 0),
+         (0, 0, 0, 0),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:11;
+   Sol:1;Ust:1;    // 10
+   Yuk:3;Boy:2;    // L.II
+   TasA:((L, L, 0, 0),
+         (0, L, 0, 0),
+         (0, L, 0, 0),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:12;
+   Sol:1;Ust:1;    // 11
+   Yuk:2;Boy:3;    // L.III
+   TasA:((0, 0, L, 0),
+         (L, L, L, 0),
+         (0, 0, 0, 0),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:9;
+   Sol:1;Ust:1;    // 12
+   Yuk:3;Boy:2;    // L.IV
+   TasA:((L, 0, 0, 0),
+         (L, 0, 0, 0),
+         (L, L, 0, 0),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:14;
+   Sol:1;Ust:1;    // 13
+   Yuk:2;Boy:3;    // S.I
+   TasA:((0, S, S, 0),
+         (S, S, 0, 0),
+         (0, 0, 0, 0),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:13;
+   Sol:1;Ust:1;    // 14
+   Yuk:3;Boy:2;    // S.II
+   TasA:((S, 0, 0, 0),
+         (S, S, 0, 0),
+         (0, S, 0, 0),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:16;
+   Sol:1;Ust:1;    // 15
+   Yuk:2;Boy:3;    // Z.I
+   TasA:((Z, Z, 0, 0),
+         (0, Z, Z, 0),
+         (0, 0, 0, 0),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:15;
+   Sol:1;Ust:1;    // 16
+   Yuk:3;Boy:2;    // Z.2
+   TasA:((0, Z, 0, 0),
+         (Z, Z, 0, 0),
+         (Z, 0, 0, 0),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:18;
+   Sol:2;Ust:1;    // 17
+   Yuk:4;Boy:2;    // I.I
+   TasA:((0, I, 0, 0),
+         (0, I, 0, 0),
+         (0, I, 0, 0),
+         (0, I, 0, 0))),
+
+  (SonrakiYon:17;
+   Sol:1;Ust:3;    // 18
+   Yuk:3;Boy:4;    // I.II
+   TasA:((0, 0, 0, 0),
+         (0, 0, 0, 0),
+         (I, I, I, I),
+         (0, 0, 0, 0))),
+
+  (SonrakiYon:19;
+   Sol:1;Ust:1;    // 19
+   Yuk:2;Boy:2;    // O
+   TasA:((O, O, 0, 0),
+         (O, O, 0, 0),
+         (0, 0, 0, 0),
+         (0, 0, 0, 0)))
+ );
+
+type
+  TRekor    =record
+    Sure,
+    Isim    :String;
+    Satir,
+    Puan    :Integer;
+  end;
+
+Var
+  Ayar    :record
+    Down,
+    Rotate,
+    Right,
+    Left      :Integer;
+  end;
+  Rekor   :array[1..3] of TRekor;
+
+function AyarRW(Istek : TAccess):boolean;
+
+implementation
+
+function AyarRW(Istek : TAccess):boolean;
+  var
+    IniAyar :TProb;
+    i       :Integer;
+begin
+  IniAyar := TProb.Create(ExtractFilePath(Application.ExeName) + 'tetris.ini', 'main');
+
+  try
+    IniAyar.ProbRndRW(istek, Ayar.Down, VK_DOWN);
+    IniAyar.ProbRndRW(istek, Ayar.Rotate, VK_UP);
+    IniAyar.ProbRndRW(istek, Ayar.Right, VK_RIGHT);
+    IniAyar.ProbRndRW(istek, Ayar.Left, VK_LEFT);
+
+    for i := 1 to 3 do begin
+      IniAyar.ProbRndRW(istek-[acDefault], Rekor[i].Isim);
+      IniAyar.ProbRndRW(istek-[acDefault], Rekor[i].Puan);
+      IniAyar.ProbRndRW(istek-[acDefault], Rekor[i].Satir);
+      IniAyar.ProbRndRW(istek-[acDefault], Rekor[i].Sure, '[00.00.00]');
+    end;
+
+  finally
+    IniAyar.Free;
+  end;
+end;
+
+begin
+  AyarRW([acRead]);
+end.

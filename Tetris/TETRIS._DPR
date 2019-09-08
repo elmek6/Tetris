@@ -1,0 +1,20 @@
+program tetris;
+
+uses
+  Forms,
+  uMain in 'uMain.pas' {frmMain},
+  uGlobal in 'uGlobal.pas',
+  uTool1 in 'uTool1.pas',
+  uAyar in 'uAyar.pas' {frmAyarlar},
+  skor in 'skor.pas' {Form1};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.Title := 'TeTRiS';
+  Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TfrmAyarlar, frmAyarlar);
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.
